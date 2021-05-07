@@ -1,50 +1,41 @@
-package day11;
-
+package day17;
 import java.util.Scanner;
-import java.util.ArrayList;
 public class Main{
     public static void main(String[] args){
-        int n=28;
-        int count=0;
-            ArrayList<Integer> list = null;
-            while(n>0){
-                list = ChangList(n);
-                int sum = addList(list);
-                if(sum == n){
-                    count++;
-                }
-                n--;
+        String s1 = "999";
+        String s2 = "1";
+        StringBuffer s3 = new StringBuffer();
+        int x1=0;
+        int x2=0;
+        int flag =0;
+        int cur =0;
+        int index1 = s1.length()-1;
+        int index2 = s2.length()-1;
+        while(index1>=0 || index2>=0){
+            if(index1>=0){
+                x1 = s1.charAt(index1)-'0';
+                index1--;
             }
-            System.out.println(count);
-//        Scanner sc = new Scanner(System.in);
-//        while(sc.hasNext()){
-//            int n = sc.nextInt();
-//            int count=0;
-//            ArrayList<Integer> list = null;
-//            while(n>0){
-//                list = ChangList(n);
-//                int sum = addList(list);
-//                if(sum == n){
-//                    count++;
-//                }
-//                n--;
-//            }
-//            System.out.println(count);
-//        }
-    }
-    public static ArrayList ChangList(int n){
-        ArrayList<Integer> list = new ArrayList<>();
-        for(int i =1;i<=n/2;i++){
-            if(n%i==0)
-                list.add(i);
+            if(index2>=0){
+                x2 = s2.charAt(index2)-'0';
+                index2--;
+            }
+            cur = x1+x2+flag;
+            x1=0;
+            x2=0;
+            if(cur>9){
+                flag=1;
+                cur = cur%10;
+            }
+            else{
+                flag=0;
+            }
+            s3.append(cur+"");
         }
-        return list;
-    }
-    public static int addList(ArrayList list){
-        int sum =0;
-        for(int i=0;i<list.size();i++){
-            sum= sum+(int)list.get(i);
+        if(flag==1){
+            s3.append("1");
         }
-        return sum;
+        s3.reverse();
+        System.out.println(s3);
     }
 }
