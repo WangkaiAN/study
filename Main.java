@@ -1,41 +1,42 @@
-package day17;
+package day25;
+
 import java.util.Scanner;
 public class Main{
     public static void main(String[] args){
-        String s1 = "999";
-        String s2 = "1";
-        StringBuffer s3 = new StringBuffer();
-        int x1=0;
-        int x2=0;
-        int flag =0;
-        int cur =0;
-        int index1 = s1.length()-1;
-        int index2 = s2.length()-1;
-        while(index1>=0 || index2>=0){
-            if(index1>=0){
-                x1 = s1.charAt(index1)-'0';
-                index1--;
+        Scanner sc = new Scanner(System.in);
+            int[] arr = new int[]{1,10,100,1000,10000};
+            //int[] result = new int[n];
+            for(int i=0;i<arr.length;i++){
+                int a=help(arr[i]);
+                if(a>9999){
+                    int b = a%10000;
+                    System.out.print(b);
+                }
+                if(a<10000 && a>999){
+                    System.out.print(a);
+                }
+                if(a<1000 && a>99){
+                    System.out.print("0"+a);
+                }
+                if(a<100 && a>9){
+                    System.out.print("00"+a);
+                }
+                if(a<10){
+                    System.out.print("000"+a);
+                }
             }
-            if(index2>=0){
-                x2 = s2.charAt(index2)-'0';
-                index2--;
-            }
-            cur = x1+x2+flag;
-            x1=0;
-            x2=0;
-            if(cur>9){
-                flag=1;
-                cur = cur%10;
-            }
-            else{
-                flag=0;
-            }
-            s3.append(cur+"");
+            System.out.println();
+    }
+    public static int help(int n){
+        int a =1;
+        int b =2;
+        int c =a;
+        while(n>2){
+            c=a+b;
+            a=b;
+            b=c;
+            n--;
         }
-        if(flag==1){
-            s3.append("1");
-        }
-        s3.reverse();
-        System.out.println(s3);
+        return c;
     }
 }
