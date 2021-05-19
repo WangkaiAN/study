@@ -1,42 +1,55 @@
-package day25;
+package day27;
 
 import java.util.Scanner;
 public class Main{
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
-            int[] arr = new int[]{1,10,100,1000,10000};
-            //int[] result = new int[n];
-            for(int i=0;i<arr.length;i++){
-                int a=help(arr[i]);
-                if(a>9999){
-                    int b = a%10000;
-                    System.out.print(b);
-                }
-                if(a<10000 && a>999){
-                    System.out.print(a);
-                }
-                if(a<1000 && a>99){
-                    System.out.print("0"+a);
-                }
-                if(a<100 && a>9){
-                    System.out.print("00"+a);
-                }
-                if(a<10){
-                    System.out.print("000"+a);
-                }
+        while(sc.hasNext()){
+            String a = sc.next();
+            String b = sc.next();
+            String c = sc.next();
+            if(Mycompare(StringAdd(a,b),c) && Mycompare(StringAdd(a,c),b) && Mycompare(StringAdd(b,c),a)){
+                System.out.println("Yes");
+            }else{
+                System.out.println("No");
             }
-            System.out.println();
-    }
-    public static int help(int n){
-        int a =1;
-        int b =2;
-        int c =a;
-        while(n>2){
-            c=a+b;
-            a=b;
-            b=c;
-            n--;
         }
-        return c;
+        sc.close();
+    }
+    public static String StringAdd(String s1,String s2){
+        String res = "";
+        int i,j,t = 0;
+        for(i=s1.length()-1,j=s2.length()-1; i>=0&& j>=0;i--,j--){
+            t += ((s1.charAt(i)-'0')+(s2.charAt(j)-'0'));
+            res = (char)(t%10+'0')+res;
+            t/=10;
+        }
+        while(i>=0){
+            t +=((s1.charAt(i))-'0');
+            res = (char)(t+'0')+res;
+            t/=10;
+            i--;
+        }
+        while(j>=0){
+            t+=(s2.charAt(j)-'0');
+            res = (char)(t + '0')+res;
+            t/=10;
+            j--;
+        }
+        if(t>0){
+            res = (char)(t+'0')+res;
+        }
+        return res;
+    }
+    public static boolean Mycompare(String s1, String s2){
+        if(s1.length() > s2.length()){
+            return true;
+        }else if(s1.length()<s2.length()){
+            return false;
+        }else if(s1.compareTo(s2)>0){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
