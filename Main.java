@@ -1,34 +1,39 @@
-package day33;
+package day34;
 
 import java.util.Scanner;
+import java.util.Arrays;
 public class Main{
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         while(sc.hasNext()){
-            String s1 = sc.next();
-            String s2 = sc.next();
-            //System.out.println(s1);
-            //System.out.println(s2);
-            int count=0;
-            for(int i =0;i<s1.length();){
-                if(s1.charAt(i) == s2.charAt(0)){
-                    int j=i+1;
-                    int index=1;
-                    for(;j<s1.length() && index<s2.length();j++,index++){
-                        if(s1.charAt(j)!= s2.charAt(index)){
-                            break;
-                        }
-                    }
-                    if(index==s2.length()){
-                        i=i+s2.length();
-                        count++;
-                        continue;
-                    }
-                }
-                i++;
+            int n = Integer.parseInt(sc.nextLine());
+            String[] as = new String[n];
+            for(int i=0;i<as.length;i++){
+                as[i] = sc.nextLine();
             }
-            System.out.println(count);
+            for(int i =0;i<as.length;i++){
+                if(as[i].contains(" ") || as[i].contains(",")){
+                    as[i] = help(as[i]);
+                }
+            }
+            for(int i =0;i<n;i++){
+                System.out.print(as[i]);
+                if(i!=n-1){
+                    System.out.print(", ");
+                }
+            }
+            System.out.println();
         }
         sc.close();
+    }
+    public static String help(String s){
+        char[] ac = new char[s.length()+2];
+        ac[0] = '"';
+        for(int i=1;i<=s.length();i++){
+            ac[i] = s.charAt(i-1);
+        }
+        ac[ac.length-1] = '"';
+        String s1 = new String(ac);
+        return s1;
     }
 }
