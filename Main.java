@@ -1,39 +1,44 @@
-package day34;
+package day35;
 
 import java.util.Scanner;
-import java.util.Arrays;
+import java.util.TreeSet;
 public class Main{
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
+        TreeSet<String> set = null;
         while(sc.hasNext()){
-            int n = Integer.parseInt(sc.nextLine());
-            String[] as = new String[n];
-            for(int i=0;i<as.length;i++){
-                as[i] = sc.nextLine();
-            }
-            for(int i =0;i<as.length;i++){
-                if(as[i].contains(" ") || as[i].contains(",")){
-                    as[i] = help(as[i]);
+            set = new TreeSet<>();
+            String s1 = sc.nextLine();
+            String s2 = sc.nextLine();
+            int flag=0;
+            for(int i =0;i<s1.length();){
+                StringBuffer s3 = new StringBuffer();
+                if(s1.charAt(i)=='"'){
+                    i++;
+                    flag=1;
                 }
-            }
-            for(int i =0;i<n;i++){
-                System.out.print(as[i]);
-                if(i!=n-1){
-                    System.out.print(", ");
+                if(flag==0){
+                    while(i<s1.length() && s1.charAt(i)!=','){
+                        s3.append(s1.charAt(i));
+                        i++;
+                    }
+                }else{
+                    while(i<s1.length() && s1.charAt(i)!='"'){
+                        s3.append(s1.charAt(i));
+                        i++;
+                    }
+                    flag=0;
+                    i++;
                 }
+                i++;
+                set.add(String.valueOf(s3));
             }
-            System.out.println();
+            if(set.contains(s2)){
+                System.out.println("Ignore");
+            }else{
+                System.out.println("Important!");
+            }
         }
         sc.close();
-    }
-    public static String help(String s){
-        char[] ac = new char[s.length()+2];
-        ac[0] = '"';
-        for(int i=1;i<=s.length();i++){
-            ac[i] = s.charAt(i-1);
-        }
-        ac[ac.length-1] = '"';
-        String s1 = new String(ac);
-        return s1;
     }
 }
