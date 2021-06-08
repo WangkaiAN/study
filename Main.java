@@ -1,58 +1,78 @@
-package day42;
-
-//走迷宫
+package day43;
+//求和
 import java.util.Scanner;
+import java.util.ArrayList;
 public class Main{
-    public static int[][] fd = {{1,0},{0,1},{-1,0},{0,-1}};
-    public static char[][] c = new char[10][10];
-    public static int[][] num = new int[10][10];
+    private static ArrayList<ArrayList<Integer>> res = new ArrayList<>();
+    private static ArrayList<Integer> list = new ArrayList<>();
+
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         while(sc.hasNext()){
-            for(int i =0;i<10;i++){
-                c[i] = sc.next().toCharArray();
-            }
-            for(int i =0;i<10;i++){
-                for(int j =0;j<10;j++){
-                    num[i][j] = Integer.MAX_VALUE;
+            int n = sc.nextInt();
+            int m = sc.nextInt();
+            dfs(1,0,m,n);
+            for(ArrayList<Integer> l :res){
+                for(int i =0;i<l.size();i++){
+                    System.out.print(l.get(i));
+                    if(i != l.size()-1){
+                        System.out.print(" ");
+                    }
                 }
+                System.out.println();
             }
-            num[0][1] = 0;
-            dfs(0,1);
-            System.out.println(num[9][8]);
         }
         sc.close();
     }
-    public static void dfs(int x,int y){
-        int x1,y1;
-        for(int i =0;i<4;i++){
-            x1 = x+fd[i][0];
-            y1 = y+fd[i][1];
-            if(0<=x1 && x1<10 && y1<10 && y1>=0 && c[x1][y1] == '.'){
-                if(num[x1][y1] > num[x][y]+1){
-                    num[x1][y1] = num[x][y]+1;
-                    dfs(x1,y1);
-                }
+    public static void dfs(int index,int sum,int target,int n){
+        if(sum>=target){
+            if(sum==target){
+                res.add(new ArrayList<>(list));
             }
+            return;
+        }
+
+        for(int i = index;i<=n;i++){
+            if(i>target) {
+                continue;
+            }
+            list.add(i);
+            dfs(i+1,sum+i,target,n);
+            list.remove(list.size()-1);
         }
     }
 }
 
-//解读密码
+//电话号码
 //import java.util.Scanner;
+//import java.util.Collections;
+//import java.util.ArrayList;
 //public class Main{
 //    public static void main(String[] args){
+//        String sy = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+//        String nu = "222333444555666777788899991234567890";
+//        ArrayList<String> list = null;
 //        Scanner sc = new Scanner(System.in);
 //        while(sc.hasNext()){
-//            String s = sc.nextLine();
-//            //System.out.println(s);
-//            StringBuffer s1 = new StringBuffer();
-//            for(int i =0;i<s.length();i++){
-//                if(s.charAt(i)<='9'&&s.charAt(i)>='0'){
-//                    s1.append(s.charAt(i));
+//            list = new ArrayList<>();
+//            int n = Integer.parseInt(sc.nextLine());
+//            for(int i = 0;i<n;i++){
+//                String str = sc.nextLine();
+//                str = str.replace("-","");
+//                String result = "";
+//                for(int j=0;j<7;j++){
+//                    result += nu.charAt(sy.indexOf(str.charAt(j)+""));
+//                }
+//                result = result.substring(0,3)+"-"+result.substring(3,7);
+//                if(!list.contains(result)){
+//                    list.add(result);
 //                }
 //            }
-//            System.out.println(s1);
+//            Collections.sort(list);
+//            for(int j = 0;j<list.size();j++){
+//                System.out.println(list.get(j));
+//            }
+//            System.out.println();
 //        }
 //        sc.close();
 //    }
