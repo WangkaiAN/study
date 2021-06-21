@@ -1,54 +1,39 @@
-package day47;
+package day48;
 
+import java.util.ArrayList;
+
+class TreeLinkNode {
+    int val;
+    TreeLinkNode left = null;
+    TreeLinkNode right = null;
+    TreeLinkNode next = null;
+
+    TreeLinkNode(int val) {
+        this.val = val;
+    }
+}
 public class Main {
     public static void main(String[] args) {
-        System.out.println(isNumeric("12.6e+6"));
+
     }
-    public static boolean isNumeric (String str) {
-        // write code here
-        if(str.length() == 1 && (str.charAt(0) > '9' || str.charAt(0) < '0')){
-            return false;
-        }
-        char[] ch=str.toCharArray();
-        if(ch.length==0 || ch==null){
-            return false;
-        }
-        int dotNum=0;//.的数量
-        int index=0;//索引位置
-        int eNum=0;//记录e的数量
-        int num=0;//记录数字的数量
-        if(ch[0]=='+' || ch[0]=='-'){
-            index++;
-        }
-        while(index<ch.length){
-            if(ch[index]>='0' && ch[index]<='9'){
-                index++;
-                num=1;
-            }
-            else if(ch[index]=='.'){// e后面不能有.,e的个数不能大于1.
-                if(dotNum>0 || eNum>0){
-                    return false;
+    public static TreeLinkNode GetNext(TreeLinkNode pNode) {
+                if(pNode == null) return null;
+                if(pNode.right != null){//有右子树，则找到右子树的最左侧结点
+                    pNode = pNode.right;
+                    while(pNode.left != null){
+                        pNode = pNode.left;
+                    }
+                    return pNode;
                 }
-                dotNum++;
-                index++;
-            }
-            else if(ch[index]=='e' || ch[index]=='E'){// 重复e或者e前面没有数字
-                if(eNum>0 || num==0){
-                    return false;
+                while(pNode.next != null){//没有右子树，找到当前节点满足自己是父结点的左孩子的结点
+                    if(pNode.next.left == pNode){
+                        return pNode.next;
+                    }
+                    pNode = pNode.next;
                 }
-                eNum++;
-                index++;
-                if(index<ch.length &&(ch[index]=='+'|| ch[index]=='-')){
-                    index++;
-                }
-                if(index==ch.length){//若e作为最后一个字符，就不符合，需要返回false
-                    return false;
-                }
-            }
-            else{
-                return false;
-            }
+                //遇到了根节点还是没有找到，
+                return null;
+
         }
-        return true;
-    }
+
 }
