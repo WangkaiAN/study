@@ -1,6 +1,5 @@
-package day49;
+package day50;
 
-import java.util.ArrayList;
 class TreeNode {
     int val = 0;
     TreeNode left = null;
@@ -10,45 +9,41 @@ class TreeNode {
         this.val = val;
 
     }
-
 }
 public class Main {
-    public static void main(String[] args) {
-
-    }
-    public static ArrayList<ArrayList<Integer>> result = new ArrayList<>();
-    public ArrayList<ArrayList<Integer> > Print(TreeNode pRoot) {
-        result = new ArrayList<>();
-        if(pRoot == null){
-            return result;
-        }
-        helper(pRoot,0);
-        for(int i = 0;i<result.size();i++){
-            if(i%2 != 0){
-                help(result.get(i));
-            }
-        }
-        return result;
-    }
-    public void helper(TreeNode root,int level){
-        if(level == result.size()){
-            result.add(new ArrayList<>());
-        }
-        result.get(level).add(root.val);
-        if(root.left != null){
-            helper(root.left,level+1);
-        }
-        if(root.right != null){
-            helper(root.right,level+1);
+    int index = -1;
+    /**
+     * 分别遍历左节点和右节点，空使用#代替，节点之间，隔开
+     * 先序遍历的方式
+     * @param root
+     * @return
+     */
+    public String Serialize(TreeNode root) {
+        if (root == null) {
+            return "#";
+        } else {
+            return root.val + "," + Serialize(root.left) + "," + Serialize(root.right);
         }
     }
-    public void help(ArrayList list){
-        int[] arr = new int[list.size()];
-        for(int i =0;i<list.size();i++){
-            arr[i] = (int)list.get(i);
+    /**
+     * 使用index来设置树节点的val值，递归遍历左节点和右节点，如果值是#则表示是空节点，直接返回
+     *
+     * @param str
+     * @return
+     */
+    TreeNode Deserialize(String str) {
+        String[] s = str.split(",");//将序列化之后的序列用，分隔符转化为数组
+        index++;//索引每次加一
+        int len = s.length;
+        if (index > len) {
+            return null;
         }
-        for(int i = 0;i<list.size();i++){
-            list.set(i,arr[arr.length-1-i]);
+        TreeNode treeNode = null;
+        if (!s[index].equals("#")) {//不是叶子节点 继续走 是叶子节点出递归
+            treeNode = new TreeNode(Integer.parseInt(s[index]));
+            treeNode.left = Deserialize(str);
+            treeNode.right = Deserialize(str);
         }
+        return treeNode;
     }
 }
