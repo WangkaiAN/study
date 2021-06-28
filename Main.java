@@ -1,49 +1,38 @@
-package day50;
+package day51;
 
-class TreeNode {
-    int val = 0;
-    TreeNode left = null;
-    TreeNode right = null;
-
-    public TreeNode(int val) {
-        this.val = val;
-
-    }
-}
 public class Main {
-    int index = -1;
-    /**
-     * 分别遍历左节点和右节点，空使用#代替，节点之间，隔开
-     * 先序遍历的方式
-     * @param root
-     * @return
-     */
-    public String Serialize(TreeNode root) {
-        if (root == null) {
-            return "#";
-        } else {
-            return root.val + "," + Serialize(root.left) + "," + Serialize(root.right);
+    private int[][] dir = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    public boolean hasPath (char[][] matrix, String word) {
+        if(matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return false;
         }
+        for(int i = 0; i < matrix.length; i++) {
+            for(int j = 0; j < matrix[0].length; j++) {
+                boolean[][] vis = new boolean[matrix.length][matrix[0].length];
+                if(dfs(matrix, word, i, j, vis, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
-    /**
-     * 使用index来设置树节点的val值，递归遍历左节点和右节点，如果值是#则表示是空节点，直接返回
-     *
-     * @param str
-     * @return
-     */
-    TreeNode Deserialize(String str) {
-        String[] s = str.split(",");//将序列化之后的序列用，分隔符转化为数组
-        index++;//索引每次加一
-        int len = s.length;
-        if (index > len) {
-            return null;
+    public boolean dfs(char[][] matrix, String word, int i, int j, boolean[][] hasVisted, int index) {
+        if(word.length() == index) {//第一次进入到这里，就是第一个字符匹配，
+            //那要是这个字符就是最后一个字符，就可以直接返回true了
+            return true;
         }
-        TreeNode treeNode = null;
-        if (!s[index].equals("#")) {//不是叶子节点 继续走 是叶子节点出递归
-            treeNode = new TreeNode(Integer.parseInt(s[index]));
-            treeNode.left = Deserialize(str);
-            treeNode.right = Deserialize(str);
+        if(i < 0 || i >= matrix.length || j < 0 || j >= matrix[0].length
+                || hasVisted[i][j] || word.charAt(index) != matrix[i][j]) {
+            return false;
         }
-        return treeNode;
+        hasVisted[i][j] = true;
+        for(int[] d : dir) {
+            if(dfs(matrix, word, i + d[0], j + d[1], hasVisted, index + 1)) {
+                return true;//只要有一个满足就可以了.就可以返回了
+            }
+        }
+        //没有一个满足，就改回去，顺便返回
+        hasVisted[i][j] = false;
+        return false;
     }
 }
